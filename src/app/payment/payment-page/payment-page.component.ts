@@ -30,7 +30,7 @@ export class PaymentPageComponent implements OnInit {
 
   obj = { billerCode: null, referenceId: 0, accessToken: null, meterNo: null, tvBouquetCode: null, cableTvNo: null, amount: null, phone: null, email: null, vendStatus: 0, userPhone: null, trasactionCategory: null, chargeFromID: 0 };
 
-  email = "paul4nank@gmail.com";
+  email = "info@magictopup.com";
   bouquetCode: any;
 
   constructor(public http: HttpService, public route: ActivatedRoute, private router: Router) { }
@@ -86,7 +86,7 @@ export class PaymentPageComponent implements OnInit {
       this.obj.cableTvNo = this.cableTvNo;
       this.obj.vendStatus = this.vendStatus
       this.obj.userPhone = this.userPhone
-      this.obj.phone = this.phone == null ? "07031676998" : this.phone
+      this.obj.phone = this.phone == null ? "08028623101" : this.phone
       this.obj.email = "info@magictopup.com"
       this.obj.trasactionCategory = this.transactionCategory
 
