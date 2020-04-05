@@ -1,0 +1,122 @@
+<section class="content" style="height: 100%;" *ngIf="isStaff && !isStartingDay">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info" *ngIf="displayForm">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{operation}} Record</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+
+      </div>
+      <!-- /.box -->
+
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Welcome back {{user_name}}</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+
+          <h3 style="text-align: center;">Cash Collected</h3><br>
+
+          <form #form="ngForm" (submit)="processForm()">
+            <div class="box-body">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <br>
+
+                    <div class="row">
+
+                      <div class="col-md-12">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label for="inputEmail3" class="col-sm-4 control-label">Cash Collected Amount</label>
+
+                          <div class="col-sm-8">
+                            <input type="number" step="any" class="form-control" id="inputEmail3"
+                            placeholder="Enter Cash Disbursed" name="TransactionAmount" required
+                            [(ngModel)]="transObj.trans.TransactionAmount" (ngModelChange)="func($event)">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <div class="form-group row">
+                          <label for="inputEmail3" class="col-sm-4 control-label">Description</label>
+
+                          <div class="col-sm-8">
+                            <textarea class="form-control" id="Description"
+                              placeholder="Description" name="Description" required [(ngModel)]="transObj.trans.Description"></textarea>
+
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                    <h5 style="color: red; text-align: center; margin-top: 20px;">{{errorMessage}}</h5>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="submit" class="btn btn-primary pull-right" [disabled]="(form.invalid || isFormValid)">Disburse Cash</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+
+        </div>
+        <!-- /.box-body -->
+
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+</section>
+
+<section class="content" style="height: 100%;" *ngIf="isStaff && isStartingDay">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info" *ngIf="displayForm">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{operation}} Record</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+
+      </div>
+      <!-- /.box -->
+
+      <div class="box">
+        <div class="box-header with-border">
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body" style="min-height: 200px;">
+
+          <div style=" width: 100%; height: 80px; margin: 0 auto; ">
+          <p style="text-align: center; color: orange;"><i class="fa fa-exclamation-triangle fa-3x" ></i></p>
+</div>
+          <!-- <span class="fa-stack fa-lg">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+            </span> -->
+
+          <h3 style="text-align: center;">Cannot Give out of your Account... No Opening Balance</h3><br>
+
+        </div>
+        <!-- /.box-body -->
+
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+</section>

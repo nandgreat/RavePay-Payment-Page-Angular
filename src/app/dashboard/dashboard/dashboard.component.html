@@ -1,0 +1,692 @@
+<section class="content" *ngIf="(userRole == 1)">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3>{{transactionCount}}</h3>
+          <p class="dashboard-font">Transactions</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-bag"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-blue">
+        <div class="inner">
+          <h3>{{UsersCount}}</h3>
+
+          <p class="dashboard-font">Users</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-purple">
+        <div class="inner">
+          <h3>{{TotalProfit | currency: '&#8358;'}}</h3>
+
+          <p class="dashboard-font">Total Profit</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-pie-graph"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-red">
+        <div class="inner">
+          <h3>{{POSTransactions | currency: '&#8358;'}}</h3>
+
+          <p class="dashboard-font">POS Transactions</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-pie-graph"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+
+    <!-- right column -->
+
+  </div>
+</section>
+
+<section class="content" style="z-index: 0" *ngIf="(userRole == 2) && !isStartingDay">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+
+      <div class="row">
+        <div class="col-md-3">
+          <h4 style="text-align: center;"><b>Cash</b>: {{cash | currency: '&#8358;'}}</h4>
+        </div>
+        <div class="col-md-3">
+          <h4 style="text-align: center;"><b>Wallet Balance</b>: {{walletBalance | currency: '&#8358;'}}</h4>
+        </div>
+        <div class="col-md-3">
+          <h4 style="text-align: center;"><b>Cable TV</b>: {{cable | currency: '&#8358;'}}</h4>
+        </div>
+        <div class="col-md-3">
+          <h4 style="text-align: center;"><b>AEDC</b>: {{aedc | currency: '&#8358;'}}</h4>
+        </div><br>
+      </div>
+
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{operation}}</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form #form="ngForm" (submit)="processTransaction()">
+          <mat-horizontal-stepper [linear]="isLinear" #stepper>
+
+            <mat-step #trans="ngModelGroup" [completed]="false" ngModelGroup="trans" [stepControl]="form.controls.trans"
+              [editable]="isEditable">
+              <ng-template matStepLabel>Select Transaction</ng-template>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6 col-md-offset-3">
+                    <h4>Select Transaction</h4>
+                  </div>
+
+                  <div class="col-md-6 col-md-offset-3" style="min-height: 160px;">
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <ng-select [items]="transactions" bindLabel="TransactionCategory" bindValue="id"
+                          [(ngModel)]="transObj.trans.TransactionCategoryID" name="TransactionCategoryID" required
+                          (change)="transactionDetails($event)">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <!-- <button type="button" class="btn btn-default pull-right" (click)="hideForm()">Cancel</button>&nbsp; -->
+                <button type="button" matStepperNext class="btn btn-primary pull-right"
+                  [disabled]="transObj.trans.TransactionCategoryID==0">Next</button>&nbsp;
+              </div>
+            </mat-step>
+
+            <!-- Extra Money Transaction Details -->
+            <mat-step #trans="ngModelGroup" *ngIf="(transactionTypeID == 1)" ngModelGroup="trans"
+              [stepControl]="form.controls.trans" [editable]="isEditable">
+              <ng-template matStepLabel>Transaction Details</ng-template>
+
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <br>
+                      <div class="row">
+                        <label for="inputEmail3" class="col-sm-6 col-sm-offset-3 control-label">Extra Money
+                          Amount</label>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                          <input type="number" step="any" class="form-control" id="inputEmail3"
+                            placeholder="Enter Amount Recieved" name="TransactionAmount" required
+                            [(ngModel)]="transObj.trans.TransactionAmount">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="button" matStepperPrevious class="btn btn-primary">Back</button>&nbsp;
+                <button type="button" matStepperNext class="btn btn-primary pull-right" (click)="onConfirm()"
+                  [disabled]="transObj.trans.TransactionAmount==0">Next</button>&nbsp;
+              </div>
+            </mat-step>
+
+            <!-- Extra Money Transaction Details -->
+            <mat-step #trans="ngModelGroup" *ngIf="(transactionTypeID == 6)" ngModelGroup="trans"
+              [stepControl]="form.controls.trans" [editable]="isEditable">
+              <ng-template matStepLabel>Transaction Details</ng-template>
+
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <br>
+                      <div class="row">
+                        <label for="inputEmail3" class="col-sm-6 col-sm-offset-3 control-label">Cable TV Amount</label>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                          <input type="number" step="any" class="form-control" id="inputEmail3"
+                            placeholder="Enter Amount Recieved" name="TransactionAmount" required
+                            [(ngModel)]="transObj.trans.TransactionAmount">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="button" matStepperPrevious class="btn btn-primary">Back</button>&nbsp;
+                <button type="button" matStepperNext class="btn btn-primary pull-right" (click)="onConfirm()"
+                  [disabled]="transObj.trans.TransactionAmount==0">Next</button>&nbsp;
+              </div>
+            </mat-step>
+
+            <mat-step #trans="ngModelGroup" *ngIf="(transactionTypeID == 7)" ngModelGroup="trans"
+              [stepControl]="form.controls.trans" [editable]="isEditable">
+              <ng-template matStepLabel>Transaction Details</ng-template>
+
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <br>
+                      <div class="row">
+                        <label for="inputEmail3" class="col-sm-6 col-sm-offset-3 control-label">Cable TV Amount</label>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                          <input type="number" step="any" class="form-control" id="inputEmail3"
+                            placeholder="Enter Amount Recieved" name="TransactionAmount" required
+                            [(ngModel)]="transObj.trans.TransactionAmount">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="button" matStepperPrevious class="btn btn-primary">Back</button>&nbsp;
+                <button type="button" matStepperNext class="btn btn-primary pull-right" (click)="onConfirm()"
+                  [disabled]="transObj.trans.TransactionAmount==0">Next</button>&nbsp;
+              </div>
+            </mat-step>
+
+            <!-- POS Transaction Details -->
+            <mat-step #trans="ngModelGroup" [completed]="false" *ngIf="(transactionTypeID == 3)" ngModelGroup="trans"
+              [stepControl]="form.controls.trans" [editable]="isEditable">
+              <ng-template matStepLabel>Transaction Details</ng-template>
+
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <br>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-4 control-label">POS Amount</label>
+                          <div class="col-sm-6 ">
+                            <input type="number" step="any" class="form-control" id="inputEmail3"
+                              placeholder="Enter Amount Recieved" name="TransactionAmount" required
+                              (ngModelChange)="func($event)" [(ngModel)]="transObj.trans.TransactionAmount">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-4 control-label">Charge</label>
+                          <div class="col-sm-6 ">
+                            <input type="number" step="any" class="form-control" id="inputEmail3" placeholder="Charge"
+                              name="Charge" required disabled [(ngModel)]="transObj.trans.Charge">
+                          </div>
+                        </div>
+                        <br><br><br>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-4 control-label">Profit</label>
+                          <div class="col-sm-6 ">
+                            <input type="number" step="any" class="form-control" id="inputEmail3" placeholder="Profit"
+                              name="Profit" required disabled [(ngModel)]="transObj.trans.Profit">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-4 control-label">Charge Method</label>
+                          <div class="col-sm-6">
+                            <ng-select name="Status" [items]="chargeMethod" bindValue="id" bindLabel="title"
+                              [(ngModel)]="transObj.trans.ChargeMethod"></ng-select>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <h5 style="color: red; text-align: center; margin-top: 30px;">{{errorMessage}}</h5>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="button" matStepperPrevious class="btn btn-primary">Back</button>&nbsp;
+                <button type="button" matStepperNext class="btn btn-primary pull-right" (click)="onConfirm()"
+                  [disabled]="(form.invalid || isFormValid)">Next</button>&nbsp;
+              </div>
+            </mat-step>
+
+            <!-- Bank to Bank Transaction Details -->
+            <mat-step #trans="ngModelGroup" *ngIf="(transactionTypeID == 2)" ngModelGroup="trans"
+              [stepControl]="form.controls.trans" [editable]="isEditable">
+              <ng-template matStepLabel>Transaction Details</ng-template>
+
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <br>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Sender Bank</label>
+                          <div class="col-sm-6">
+                            <ng-select [items]="inUseBanks" bindLabel="Bank" bindValue="id"
+                              [(ngModel)]="transObj.trans.SenderBankID" name="SenderBankID" required
+                              (change)=getCharge($event)>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Recipient Bank</label>
+                          <div class="col-sm-6">
+                            <ng-select [items]="banks" bindLabel="Bank" bindValue="id"
+                              [(ngModel)]="transObj.trans.RecipientBankID" name="RecipientBankID" required
+                              (change)=onRecipientBank($event)>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <br><br><br>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Amount</label>
+                          <div class="col-sm-6">
+                            <input type="number" step="any" class="form-control" id="inputEmail3"
+                              placeholder="Enter Amount Recieved" name="TransactionAmount" required
+                              (ngModelChange)="func($event)" [(ngModel)]="transObj.trans.TransactionAmount">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Charge</label>
+                          <div class="col-sm-6">
+                            <input type="number" step="any" class="form-control" id="inputEmail3" disabled
+                              placeholder="Charge" name="Charge" required [(ngModel)]="transObj.trans.Charge">
+                          </div>
+                        </div>
+                        <br><br><br>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Transaction Cost</label>
+                          <div class="col-sm-6">
+                            <input type="number" step="any" class="form-control" id="inputEmail3"
+                              placeholder="Transaction Cost" name="TransactionCost" required disabled
+                              [(ngModel)]="transObj.trans.TransactionCost">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Profit</label>
+                          <div class="col-sm-6">
+                            <input type="number" step="any" class="form-control" id="inputEmail3" disabled name="Profit"
+                              required [(ngModel)]="transObj.trans.Profit">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <h5 style="color: red; text-align: center; margin-top: 30px;">{{errorMessage}}</h5>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="button" matStepperPrevious class="btn btn-primary">Back</button>&nbsp;
+                <button type="button" matStepperNext class="btn btn-primary pull-right" (click)="onConfirm()"
+                [disabled]="(form.invalid || isFormValid)">Next</button>&nbsp;
+              </div>
+            </mat-step>
+
+            <!-- POS EOD Transaction Details -->
+            <mat-step #trans="ngModelGroup" *ngIf="(transactionTypeID == 4)" ngModelGroup="trans"
+              [stepControl]="form.controls.trans" [editable]="isEditable">
+              <ng-template matStepLabel>Transaction Details</ng-template>
+
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <br>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Sender Bank</label>
+                          <div class="col-sm-6">
+                            <ng-select [items]="banks" bindLabel="Bank" bindValue="id"
+                              [(ngModel)]="transObj.trans.SenderBankID" name="SenderBankID" (change)=getCharge($event)
+                              required>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Recipient Bank</label>
+                          <div class="col-sm-6">
+                            <ng-select [items]="inUseBanks" bindLabel="Bank" bindValue="id"
+                              [(ngModel)]="transObj.trans.RecipientBankID" name="RecipientBankID" required
+                              (change)=onRecipientBank($event)>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <br><br><br>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Amount</label>
+                          <div class="col-sm-6">
+                            <input type="number" step="any" class="form-control" id="inputEmail3"
+                              placeholder="Enter Amount Recieved" name="TransactionAmount" required
+                              (ngModelChange)="func($event)" [(ngModel)]="transObj.trans.TransactionAmount">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Charge</label>
+                          <div class="col-sm-6">
+                            <input type="number" step="any" class="form-control" id="inputEmail3" disabled
+                              placeholder="Charge" name="Charge" required [(ngModel)]="transObj.trans.Charge">
+                          </div>
+                        </div>
+                        <br><br><br>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Transaction Cost</label>
+                          <div class="col-sm-6">
+                            <input type="number" step="any" class="form-control" id="inputEmail3"
+                              placeholder="Transaction Cost" name="TransactionCost" required disabled
+                              [(ngModel)]="transObj.trans.TransactionCost">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputEmail3" class="col-sm-6 control-label">Profit</label>
+                          <div class="col-sm-6">
+                            <input type="number" step="any" class="form-control" id="inputEmail3" disabled name="Profit"
+                              required [(ngModel)]="transObj.trans.Profit">
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <h5 style="color: red; text-align: center; margin-top: 30px;">{{errorMessage}}</h5>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="button" matStepperPrevious class="btn btn-primary">Back</button>&nbsp;
+                <button type="button" matStepperNext class="btn btn-primary pull-right" (click)="onConfirm()"
+                  [disabled]="(form.invalid || isFormValid)">Next</button>&nbsp;
+              </div>
+            </mat-step>
+
+            <mat-step [editable]="isEditable">
+              <ng-template matStepLabel>Confirmation</ng-template>
+              <section class="invoice">
+                <!-- info row -->
+                <div class="row invoice-info">
+                  <div class="col-sm-12 invoice-col">
+                    <b>Confirm Transaction Details</b><br> {{obj.order.DateOfSale | date: 'longDate'}}<br>
+                  </div><br><br>
+
+                  <!-- /.col -->
+                  <!-- <div class="col-sm-6 invoice-col">
+                    To
+                    <address>
+                      <strong>{{obj.order.CustomerName}}</strong><br>
+                      <br>
+
+                    </address>
+                  </div> -->
+                  <!-- /.col -->
+
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                <!-- Table row -->
+                <div class="row">
+                  <div class="col-xs-12 table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Transaction Type</th>
+                          <!-- <th>Narration</th> -->
+                          <th *ngIf="transactionTypeID==2 || transactionTypeID == 4">Sender Bank</th>
+                          <th *ngIf="transactionTypeID==2 || transactionTypeID == 4">Recipient Bank</th>
+                          <th>Amount</th>
+                          <th *ngIf="transactionTypeID==3">Charge Method</th>
+                          <th *ngIf="transactionTypeID==2 || transactionTypeID == 4 || transactionTypeID == 3">Charge
+                          </th>
+                          <th *ngIf="transactionTypeID==2 || transactionTypeID == 4">TransactionCost</th>
+                          <th *ngIf="transactionTypeID==2 || transactionTypeID == 4 || transactionTypeID == 3">Profit
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{1}}</td>
+                          <td>{{transCategory}}</td>
+                          <td *ngIf="transactionTypeID==2 || transactionTypeID == 4">{{myBank.Bank }}</td>
+                          <td *ngIf="transactionTypeID==2 || transactionTypeID == 4">{{recipientBank }}</td>
+                          <td>{{transObj.trans.TransactionAmount | currency:'&#8358;'}}</td>
+                          <td *ngIf="transactionTypeID==3">{{myChargMethod}}</td>
+                          <td *ngIf="transactionTypeID==2 || transactionTypeID == 4">
+                            {{transObj.trans.TransactionCost | currency:'&#8358;'}}</td>
+                          <td *ngIf="transactionTypeID==2 || transactionTypeID == 4 || transactionTypeID == 3">
+                            {{transObj.trans.Charge | currency:'&#8358;'}}</td>
+                          <td *ngIf="transactionTypeID==2 || transactionTypeID == 4 || transactionTypeID == 3">
+                            {{transObj.trans.Profit | currency:'&#8358;'}}</td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <!-- accepted payments column -->
+                  <div class="col-xs-6">
+
+                  </div>
+                  <!-- /.col -->
+                  <!-- <div class="col-xs-6">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                            <th style="width:50%">Total:</th>
+                            <td class="text-right">{{subtotal | currency:'&#8358; '}}</td>
+                          </tr>
+
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div> -->
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                <!-- this row will not appear when printing -->
+                <div class="row no-print">
+                  <div class="col-xs-12">
+                    <button type="button" matStepperPrevious class="btn btn-primary">Back</button>&nbsp;
+                    <!-- <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i>
+                        Print</a> -->
+                    <button type="submit" matStepperNext class="btn btn-success pull-right">
+                      <i class="fa fa-credit-card"></i> Confirm Transaction
+                    </button>
+                  </div>
+                </div>
+              </section>
+            </mat-step>
+
+            <mat-step>
+              <ng-template matStepLabel>Completed</ng-template>
+
+              <div class="jumbotron text-xs-center" style="align-content: center;">
+                <!-- <i class="fa fa-check-circle-o fa-5x"  style="text-align:center; "></i> -->
+                <h1 class="display-3" style="text-align:center;">Thank You!</h1>
+                <p class="lead" style="text-align:center;"><strong>Purchase was Successfull</strong></p>
+                <hr>
+                <!-- <p class="alignCenter">
+                      Having trouble? <a href="">Contact us</a>
+                    </p> -->
+                <p class="lead" style="text-align:center;">
+                  <button class="btn btn-primary btn-md" type="reset" (click)="stepper.reset()">Create New
+                    Transaction</button>
+                </p>
+              </div>
+
+            </mat-step>
+          </mat-horizontal-stepper>
+          <!-- /.box-footer -->
+
+        </form>
+      </div>
+      <!-- /.box -->
+    </div>
+    <!--/.col (right) -->
+  </div>
+  <!-- /.row -->
+</section>
+
+<section class="content" style="height: 100%;" *ngIf="(userRole == 2) && isStartingDay">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info" *ngIf="displayForm">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{operation}} Record</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+
+      </div>
+      <!-- /.box -->
+
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Welcome back {{user_name}}</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+
+          <h3 style="text-align: center;">Enter your Opening Balance</h3><br>
+
+          <form #form="ngForm" (submit)="processForm()">
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-4 control-label">Cash at hand</label>
+
+                    <div class="col-sm-8">
+                      <input type="number" min="0" value="0" step="2" class="form-control" id="CashAmount"
+                        placeholder="Cash at hand" name="CashAmount" required [(ngModel)]="obj.order.CashAmount">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-4 control-label">Cable TV Balance</label>
+
+                    <div class="col-sm-8">
+                      <input type="number" min="0" value="0" step="2" class="form-control" id="CableTVAmount"
+                        placeholder="Cable TV Balance" name="CableTVAmount" [(ngModel)]="obj.order.CableTVAmount">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-4 control-label">AEDC Balance</label>
+
+                    <div class="col-sm-8">
+                      <input type="number" min="0" value="0" step="2" class="form-control" id="AEDCAmount"
+                        placeholder="AEDC Balance" name="AEDCAmount" [(ngModel)]="obj.order.AEDCAmount">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+              </div>
+
+              <div class="row" *ngFor="let item of obj.detail; index as i">
+                <div class="col-md-6">
+                  <div class="form-group row">
+
+                    <label for="inputEmail3" class="col-sm-4 control-label">Bank</label>
+
+                    <div class="col-sm-8">
+                      <ng-select [items]="banks" bindLabel="Bank" bindValue="id" [(ngModel)]="item.RecipientBankID"
+                        name="BankID{{i}}" required>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group row">
+
+                    <label for="inputEmail3" class="col-sm-4 control-label">Balance</label>
+
+                    <div class="col-sm-8">
+                      <input type="number" min="0" value="0" step="2" class="form-control" id="Balance"
+                        placeholder="Balance" name="Balance{{i}}" required [(ngModel)]="item.Balance" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="button" class="btn btn-danger btn-xs" (click)="removeItem(i)"><i
+                      class="fa fa-remove"></i></button>
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="button" class="btn btn-default" (click)="addItem()">Add Bank</button>&nbsp;
+
+              <button type="submit" class="btn btn-primary pull-right" [disabled]="form.invalid">{{operation}}</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+
+        </div>
+        <!-- /.box-body -->
+
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+</section>

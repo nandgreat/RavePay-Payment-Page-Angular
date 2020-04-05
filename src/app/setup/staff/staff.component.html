@@ -1,0 +1,186 @@
+<section class="content-header">
+  <h1>
+    {{title}}
+  </h1>
+</section>
+<section class="content">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info" *ngIf="displayForm">
+        <div class="box-header with-border">
+          <h3 class="box-title">Record</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form #form="ngForm" (submit)="processForm()">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">First Name</label>
+
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="FirstName" placeholder="First Name" name="FirstName"
+                      required [(ngModel)]="obj.FirstName">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Last Name</label>
+
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="LastName" placeholder="Last Name" name="LastName"
+                      required [(ngModel)]="obj.LastName">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Middle Name</label>
+
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="MiddleName" placeholder="Middle Name" name="MiddleName"
+                      required [(ngModel)]="obj.MiddleName">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Gender</label>
+
+                  <div class="col-sm-8">
+                    <ng-select name="Gender" [items]="gender" bindValue="id" bindLabel="Gender" [(ngModel)]="obj.GenderID"></ng-select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+                      <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Role</label>
+
+                  <div class="col-sm-8">
+                    <ng-select name="RoleID" [items]="roles" bindValue="id" bindLabel="Role"
+                      [(ngModel)]="obj.RoleID"></ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+
+
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-4 control-label">Email</label>
+
+                    <div class="col-sm-8">
+                      <input type="email" class="form-control" id="Email" placeholder="Email" name="Email"
+                      required [(ngModel)]="obj.Email">
+                    </div>
+                  </div>
+                  <!-- /.form-group -->
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Username</label>
+
+                  <div class="col-sm-8">
+                      <input type="text" class="form-control" id="Username" placeholder="Username" name="Username"
+                      required [(ngModel)]="obj.Username">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-4 control-label">Password</label>
+
+                    <div class="col-sm-8">
+                      <input type="password" class="form-control" id="Password" placeholder="Password" name="Password"
+                      [required]="requirePassword" [(ngModel)]="obj.Password">
+                    </div>
+                  </div>
+                  <!-- /.form-group -->
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Status</label>
+
+                  <div class="col-sm-8">
+
+                     <ng-select name="Status" [items]="status" bindValue="id" bindLabel="title" [(ngModel)]="obj.StatusID"></ng-select>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- /.box-body -->
+          <div class="box-footer">
+            <button type="button" (click)="hideForm()" class="btn btn-default  pull-right">Cancel</button>&nbsp;
+            <button type="button" [disabled]="form.invalid" (click)="processForm()" class="btn btn-primary pull-right">{{operation}}</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.box -->
+
+    <!--/.col (right) -->
+
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">List</h3>
+        <div class="box-tools pull-right">
+          <button class="btn btn-primary btn-sm" type="button" (click)="newForm()"><span class="fa fa-plus"></span>
+            Add New</button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>S/N</th>
+              <th>Full Name </th>
+              <th>Username</th>
+              <th>Gender</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data; index as i">
+              <td>{{i+1}}</td>
+              <td>{{item.FirstName}} {{item.LastName}}</td>
+              <td>{{item.Username}}</td>
+              <td>{{item.Gender}}</td>
+              <td>{{item.Role}}</td>
+              <td>{{item.StatusID | statusPipe}}</td>
+              <td><button type="button" class="btn btn-primary btn-xs" (click)="loadItem(item.id)">Edit</button>&nbsp;
+              <button type="button" class="btn btn-danger btn-xs" (click)="deleteUser(item.id)">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.box-body -->
+
+    </div>
+    </div>
+  </div>
+</section>

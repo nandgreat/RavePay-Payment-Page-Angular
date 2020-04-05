@@ -1,0 +1,131 @@
+<section class="content-header">
+  <h1>
+    {{title}}
+  </h1>
+</section>
+<section class="content">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info" *ngIf="displayForm">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{operation}} Record</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form #form="ngForm" (submit)="processForm()">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Transaction Type</label>
+
+                  <div class="col-sm-8">
+                    <ng-select name="TransactionCategoryID" [items]="transactions" bindValue="id"
+                      bindLabel="TransactionCategory" [(ngModel)]="obj.TransactionCategoryID"></ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Lower Limit</label>
+
+                  <div class="col-sm-8">
+                    <input type="number" step="2" class="form-control" id="MinAmount" placeholder="Lower Amount"
+                      name="MinAmount" required [(ngModel)]="obj.MinAmount">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Upper Limit</label>
+
+                  <div class="col-sm-8">
+                    <input type="number" step="2" class="form-control" id="MaxAmount" placeholder="Upper Amount"
+                      name="MaxAmount" required [(ngModel)]="obj.MaxAmount">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Charge</label>
+
+                  <div class="col-sm-8">
+                    <input type="number" step="2" class="form-control" id="Charge" placeholder="Charge"
+                      name="Charge" required [(ngModel)]="obj.Charge"> </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- /.box-body -->
+          <div class="box-footer">
+            <button type="button" (click)="hideForm()" class="btn btn-default  pull-right">Cancel</button>&nbsp;
+            <button type="button" [disabled]="form.invalid" (click)="processForm()"
+              class="btn btn-primary pull-right">{{operation}}</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.box -->
+
+      <div class="box">
+        <div class="box-header with-border">
+
+          <div class="row">
+          <h3 class="box-title col-md-3">List</h3>
+
+          <div class="col-md-6">
+              <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Transaction Type</label>
+
+                  <div class="col-sm-6">
+                      <ng-select name="TransactionType" [items]="transactions" bindValue="id" bindLabel="TransactionCategory"
+                      required (change)="getTransactionCharge($event)"></ng-select>
+                  </div>
+                </div>
+          </div>
+
+
+        </div>
+          <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-sm" type="button" (click)="newForm()"><span class="fa fa-plus"></span>
+              Add New</button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>Transaction Category</th>
+                <th>Minimum Amount</th>
+                <th>Maximum Amount</th>
+                <th>Charge</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data; index as i">
+                <td>{{i+1}}</td>
+                <td>{{item.TransactionCategory}}</td>
+                <td>{{item.MinAmount | currency:'&#8358; '}}</td>
+                <td>{{item.MaxAmount | currency:'&#8358; '}}</td>
+                <td>{{item.Charge | currency:'&#8358; '}}</td>
+                <td><button type="button" class="btn btn-primary btn-xs" (click)="loadItem(item.id)">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- /.box-body -->
+
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+</section>

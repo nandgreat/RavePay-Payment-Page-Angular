@@ -1,0 +1,71 @@
+<section class="content-header">
+  <h1>
+    {{title}}
+  </h1>
+</section>
+<section class="content">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <a routerLink="/setup/transaction-summary" class="btn btn-default"><i class="fa fa-arrow-left"></i> &nbsp; <b>Back </b></a>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+
+      </div>
+      <!-- /.box -->
+
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">List</h3>
+
+        </div>
+        <!-- /.box-header -->
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>Opening Balance</th>
+                <th>Extra Money</th>
+                <th>Start Working Money</th>
+                <th>Money Transferred</th>
+                <th>Money Paid out</th>
+                <th>Bank Charges</th>
+                <th>Company Charges</th>
+                <th>Cash Recieved</th>
+                <th>Cash Returned</th>
+                <th>POS</th>
+                <th>Date</th>
+                <!-- <td>Actions</td> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data; index as i">
+                <td>{{i+1}}</td>
+                <td>{{item.Opening | currency: '&#8358;'}}</td>
+                <td>{{item.ExtraMoney | currency: '&#8358;'}}</td>
+                <td>{{(item.Opening * 1) + (item.ExtraMoney*1) | currency: '&#8358;'}}</td>
+                <td>{{item.MoneyTransferred | currency: '&#8358;'}}</td>
+                <td>{{item.MoneyPaidOut | currency: '&#8358;'}}</td>
+                <td>{{item.BankCharges | currency: '&#8358;'}}</td>
+                <td>{{item.CompanyCharges | currency: '&#8358;'}}</td>
+                <td>{{item.CashRecieved | currency: '&#8358;'}}</td>
+                <td>{{item.CashRecieved - item.MoneyPaidOut | currency: '&#8358;'}}</td>
+                <td>{{item.POS | currency: '&#8358;'}}</td>
+                <td>{{item.TransactionDate}}</td>
+                <!-- <td><button type="button" class="btn btn-primary btn-xs" (click)="loadItem(item.id)">Edit</button></td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- /.box-body -->
+
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+</section>

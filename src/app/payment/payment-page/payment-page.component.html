@@ -1,0 +1,110 @@
+<main>
+  <div id="app">
+    <div class="container">
+      <div class="row" style="margin-top: 50px;">
+        <div class="col-xs-6 col-sm-6 col-md-6">
+          <a href="#"><img src="../../../assets/img/magictopup_logo.png" alt="Logo" /></a>
+          <address>
+            <strong>Magic Topup</strong>
+            <br>
+            Opposite Dr. Shaolin off Pigba same, Okada Junction
+            <br>
+            Apo, Abuja F.C.T., Nigeria.
+            <br>
+            <abbr title="Phone">Phone:</abbr> +234(0)8028623101
+          </address>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+          <p>
+            <em>
+              <p id="date"></p>
+            </em>
+          </p>
+          <p>
+            <em>Receipt No: {{ref}}</em>
+          </p>
+        </div>
+      </div>
+      <div class="row" *ngIf="isTableVisible">
+        <div class="text-center">
+
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th *ngIf="transactionCategory == 1">Disco</th>
+              <th *ngIf="transactionCategory == 1">Meter No</th>
+              <th *ngIf="transactionCategory == 2">Network</th>
+              <th *ngIf="transactionCategory == 2">Phone</th>
+              <th *ngIf="transactionCategory == 3">Cable TV</th>
+              <th *ngIf="transactionCategory == 3">Smart Card No</th>
+              <th class="text-center">Price</th>
+              <th class="text-center">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-md-1" style="text-align: center"> 1 </td>
+              <td class="col-md-3"><em>{{billerCode}}</em></td>
+              <td class="col-md-4" *ngIf="transactionCategory == 1">{{meterNo}}</td>
+              <td class="col-md-4" *ngIf="transactionCategory == 2">{{phone}}</td>
+              <td class="col-md-4" *ngIf="transactionCategory == 3">{{cableTvNo}}</td>
+              <td class="col-md-2 text-center">{{amount  | currency:'&#8358; '}}</td>
+              <td class="col-md-2 text-center">{{amount  | currency:'&#8358; '}}</td>
+            </tr>
+            <tr>
+              <td>   </td>
+              <td>   </td>
+              <td class="text-right">
+                <p>
+                  <strong>Subtotal: </strong>
+                </p>
+                <p>
+                  <strong>Tax: </strong>
+                </p>
+              </td>
+              <td class="text-center">
+                <p>
+                  <strong>{{amount  | currency:'&#8358; '}}</strong>
+                </p>
+                <p>
+                  <strong>{{0.00  | currency:'&#8358; '}}</strong>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>   </td>
+              <td>   </td>
+              <td class="text-right">
+                <h4><strong>Total: </strong></h4>
+              </td>
+              <td class="text-center text-danger">
+                <h4><strong>{{amount  | currency:'&#8358; '}}</strong></h4>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <rave-pay-button [text]="'Make Payment'" [className]="'btn btn-success pull-right'"
+        (callback)="confirmPayment($event)" (close)="cancelledPayment()"
+        [key]="'FLWPUBK_TEST-f979aa1ad2e6f1fc35c3ac53c58f6385-X'" [reference]="ref" [amount]="amount"
+        [email]="email"></rave-pay-button>
+
+        <!-- <button type="button" class="btn btn-success btn-lg btn-block payBtn" style="border-radius: 0px"
+          onclick="loadPaystack();">
+          Pay Now   <span class="glyphicon glyphicon-chevron-right"></span>
+        </button> -->
+        <p class="wait" style="font-size: 1.9em; display: none; text-align: center; color: #036;font-style: italic;">
+          <strong>Please wait...</strong></p>
+      </div>
+
+      <div class="iq-copyright iq-mtb-10 iq-font-white text-center" style="margin-top: 50px">
+        &copy; Copyright
+        <a target="_blank" href="https://wiredbanking.com/" class="iq-font-orange iq-tw-6">Wired Banking</a> All Rights Reserved
+      </div>
+    </div>
+
+  </div>
+</main>

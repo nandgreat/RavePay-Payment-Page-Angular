@@ -1,0 +1,144 @@
+<section class="content" style="height: 100%;" *ngIf="isStaff && !isStartingDay">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info" *ngIf="displayForm">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{operation}} Record</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+
+      </div>
+      <!-- /.box -->
+
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Welcome back {{user_name}}</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+
+          <h3 style="text-align: center;">Top up your Wallets</h3><br>
+
+          <form #form="ngForm" (submit)="processForm()">
+            <div class="box-body">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-4 control-label">Cable TV Balance</label>
+
+                    <div class="col-sm-8">
+                      <input type="number" min="0" value="0" step="2" class="form-control" id="CableTVAmount"
+                        placeholder="Cable TV Balance" name="CableTVAmount" [(ngModel)]="obj.order.CableTVAmount">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-4 control-label">AEDC Balance</label>
+
+                    <div class="col-sm-8">
+                      <input type="number" min="0" value="0" step="2" class="form-control" id="AEDCAmount"
+                        placeholder="AEDC Balance" name="AEDCAmount" [(ngModel)]="obj.order.AEDCAmount">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+              </div>
+
+              <div class="row" *ngFor="let item of obj.detail; index as i">
+                <div class="col-md-6">
+                  <div class="form-group row">
+
+                    <label for="inputEmail3" class="col-sm-4 control-label">Bank</label>
+
+                    <div class="col-sm-8">
+                      <ng-select [items]="inUseBanks" bindLabel="Bank" bindValue="id" [(ngModel)]="item.RecipientBankID"
+                        name="BankID{{i}}">
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group row">
+
+                    <label for="inputEmail3" class="col-sm-4 control-label">Balance</label>
+
+                    <div class="col-sm-8">
+                      <input type="number" min="0" value="0" step="2" class="form-control" id="Balance"
+                        placeholder="Balance" name="Balance{{i}}" required [(ngModel)]="item.Balance">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="button" class="btn btn-danger btn-xs" (click)="removeItem(i)"><i
+                      class="fa fa-remove"></i></button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="button" class="btn btn-default" (click)="addItem()">Add Bank</button>&nbsp;
+
+              <button type="submit" class="btn btn-primary pull-right" [disabled]="form.invalid">Top up Account</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+
+        </div>
+        <!-- /.box-body -->
+
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+</section>
+
+<section class="content" style="height: 100%;" *ngIf="isStaff && isStartingDay">
+  <div class="row">
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info" *ngIf="displayForm">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{operation}} Record</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+
+      </div>
+      <!-- /.box -->
+
+      <div class="box">
+        <div class="box-header with-border">
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body" style="min-height: 200px;">
+
+          <div style=" width: 100%; height: 80px; margin: 0 auto; ">
+            <p style="text-align: center; color: orange;"><i class="fa fa-exclamation-triangle fa-3x"></i></p>
+          </div>
+          <!-- <span class="fa-stack fa-lg">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+            </span> -->
+
+          <h3 style="text-align: center;">Cannot Top up your Account... No Opening Balance</h3><br>
+
+        </div>
+        <!-- /.box-body -->
+
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+</section>

@@ -1,0 +1,87 @@
+<section class="content-header">
+  <h1>
+    Approval Type
+    <!-- <small>Preview</small> -->
+  </h1>
+  <!-- <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Forms</a></li>
+        <li class="active">General Elements</li>
+      </ol> -->
+</section>
+<section class="content">
+  <div class="row">
+
+    <!-- right column -->
+    <div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info" *ngIf="displayForm">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{operation}} Record</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form #form="ngForm" (submit)="processForm()">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-sm-3 control-label">Approval Type</label>
+
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="inputEmail3" placeholder="Approval Type" name="ApprovalType"
+                      required [(ngModel)]="obj.ApprovalType">
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer">
+            <button type="button`" class="btn btn-default pull-right" (click)="hideForm()">Cancel</button>
+            <button type="submit" class="btn btn-primary pull-right" [disabled]="form.invalid">{{operation}}</button>
+          </div>
+          <!-- /.box-footer -->
+        </form>
+      </div>
+      <!-- /.box -->
+
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">List</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-sm" type="button" (click)="showForm()"><span class="fa fa-plus"></span>
+              Add New</button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>Approval Type</th>
+                
+                <td>Actions</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data; index as i">
+                <td>{{i+1}}</td>
+                <td>{{item.ApprovalType}}</td>
+                
+                <td><button type="button" class="btn btn-primary btn-xs" (click)="loadItem(item.id)">Edit</button></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <!-- /.box-body -->
+
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+  <!-- /.row -->
+</section>
